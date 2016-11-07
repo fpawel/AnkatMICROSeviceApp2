@@ -20,7 +20,7 @@ let onException ( e : exn ) =
 let main () = 
     Application.EnableVisualStyles()
     Application.SetCompatibleTextRenderingDefault true
-    MainWindow.initialize()        
+    MainWindow.initialize() 
     Application.Run MainWindow.form
     Trace.save()
     
@@ -53,11 +53,11 @@ do
     mutex.SetAccessControl(securitySettings)
         
     try
-        let hasHandle = mutex.WaitOne(0, false);
-        if not hasHandle then onAnotherInstanceExist() else
-        main()
-        failwith "ddd"
-        
+        if mutex.WaitOne(0, false) then 
+            main()
+            failwith "ddd"            
+        else
+            onAnotherInstanceExist()         
     with
     | :? AbandonedMutexException ->
         onAnotherInstanceExist()

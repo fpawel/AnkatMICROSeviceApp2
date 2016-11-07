@@ -25,10 +25,11 @@ module private Help =
             Path.Combine(Path.ofDateTime DateTime.Now, "trace.log" )
 
     let initialize(mem : MemoryStream) = 
-        use zip = ZipFile.Read zipArchFileName 
-        let currentFileName = currentFileName() 
-        if zip.ContainsEntry currentFileName then                
-            zip.[currentFileName].Extract(mem)
+        if File.Exists zipArchFileName then
+            use zip = ZipFile.Read zipArchFileName 
+            let currentFileName = currentFileName() 
+            if zip.ContainsEntry currentFileName then                
+                zip.[currentFileName].Extract(mem)
         mem
         
     let memoryStream = 
